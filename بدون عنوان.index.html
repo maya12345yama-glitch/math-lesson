@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آلة حاسبة سماح الزليطني</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: #000;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Tajawal', sans-serif;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .calculator {
+            background: #0a0a0a;
+            width: 100%;
+            max-width: 360px;
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,1), 0 0 15px rgba(212, 175, 55, 0.3);
+            border: 2px solid var(--gold);
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-pic {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            margin-bottom: 10px;
+            object-fit: cover;
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        .owner-name {
+            color: var(--gold);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .screen {
+            background: #121812;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+            border: 3px solid #000;
+            box-shadow: inset 0 0 10px #000;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #history {
+            color: #556b55;
+            font-size: 0.8rem;
+            height: 20px;
+            direction: ltr;
+        }
+
+        #result {
+            color: #bfffbf;
+            font-size: 1.8rem;
+            font-family: monospace;
+            direction: ltr;
+            overflow-x: auto;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            height: 52px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: linear-gradient(145deg, #222, #080808);
+            color: var(--gold);
+            box-shadow: 0 4px 0 #000, 0 8px 10px rgba(0,0,0,0.5);
+            transition: 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #000;
+        }
+
+        .sci-btn { background: #151515; font-size: 0.9rem; color: #fff; }
+        .op-btn { background: #1a1a1a; color: var(--gold); }
+        .action-btn { background: linear-gradient(145deg, #a33, #700); color: #fff; }
+        .equal-btn { background: linear-gradient(145deg, #d4af37, #8a6e18); color: #000; grid-column: span 2; }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.6rem;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <div class="header">
+            <img src="1000205705.jpg" class="profile-pic" onerror="this.src='https://placehold.co/100/d4af37/000000?text=S.Z';">
+            <h2 class="owner-name">سماح الزليطني</h2>
+        </div>
+
+        <div class="screen">
+            <div id="history"></div>
+            <div id="result">0</div>
+        </div>
+
+        <div class="buttons">
+            <button class="action-btn" onclick="uiAction('AC')">AC</button>
+            <button class="action-btn" onclick="uiAction('DEL')">DEL</button>
+            <button class="sci-btn" onclick="uiAction('(')">(</button>
+            <button class="sci-btn" onclick="uiAction(')')">)</button>
+
+            <button class="sci-btn" onclick="sci('sin')">sin</button>
+            <button class="sci-btn" onclick="sci('cos')">cos</button>
+            <button class="sci-btn" onclick="sci('tan')">tan</button>
+            <button class="op-btn" onclick="uiAction('/')">÷</button>
+
+            <button class="sci-btn" onclick="sci('log')">log</button>
+            <button onclick="uiAction('7')">7</button>
+            <button onclick="uiAction('8')">8</button>
+            <button onclick="uiAction('9')">9</button>
+
+            <button class="op-btn" onclick="uiAction('*')">×</button>
+            <button onclick="uiAction('4')">4</button>
+            <button onclick="uiAction('5')">5</button>
+            <button onclick="uiAction('6')">6</button>
+
+            <button class="op-btn" onclick="uiAction('-')">-</button>
+            <button onclick="uiAction('1')">1</button>
+            <button onclick="uiAction('2')">2</button>
+            <button onclick="uiAction('3')">3</button>
+
+            <button class="op-btn" onclick="uiAction('+')">+</button>
+            <button class="sci-btn" onclick="sci('sqrt')">√</button>
+            <button onclick="uiAction('0')">0</button>
+            <button onclick="uiAction('.')">.</button>
+
+            <button class="sci-btn" onclick="uiAction('**')">xʸ</button>
+            <button class="equal-btn" onclick="calc()">=</button>
+            <button class="sci-btn" onclick="uiAction('Math.PI')">π</button>
+        </div>
+
+        <div class="footer">نسخة علمية مطورة - 2024</div>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const resDiv = document.getElementById('result');
+        const histDiv = document.getElementById('history');
+        let expr = '0';
+        let isNew = true;
+
+        function playFeedback(isEqual = false) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.frequency.value = isEqual ? 800 : 600;
+            g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+            osc.connect(g);
+            g.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+
+        function uiAction(v) {
+            playFeedback();
+            if (v === 'AC') {
+                expr = '0';
+                histDiv.innerText = '';
+            } else if (v === 'DEL') {
+                expr = expr.length > 1 ? expr.slice(0, -1) : '0';
+            } else {
+                if (expr === '0' || isNew) expr = v;
+                else expr += v;
+                isNew = false;
+            }
+            resDiv.innerText = expr.replace('Math.PI', 'π').replace('**', '^');
+        }
+
+        function sci(f) {
+            playFeedback();
+            if (f === 'sqrt') expr = `Math.sqrt(${expr === '0' ? '' : expr}`;
+            else if (f === 'log') expr = `Math.log10(${expr === '0' ? '' : expr}`;
+            else {
+                expr = `Math.${f}((${expr})*Math.PI/180)`;
+                calc();
+                return;
+            }
+            resDiv.innerText = expr;
+            isNew = false;
+        }
+
+        function calc() {
+            playFeedback(true);
+            try {
+                histDiv.innerText = expr.replace('Math.PI', 'π').replace('**', '^') + ' =';
+                let res = eval(expr);
+                expr = Number.isInteger(res) ? res.toString() : res.toFixed(6);
+                resDiv.innerText = expr;
+                isNew = true;
+            } catch {
+                resDiv.innerText = "Error";
+                setTimeout(() => uiAction('AC'), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
+
